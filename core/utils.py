@@ -1,3 +1,4 @@
+import os
 import cv2
 import random
 import colorsys
@@ -11,7 +12,7 @@ def load_imagefile(image_encoded) -> Image.Image:
     return Image.open(BytesIO(image_encoded))
 
 
-def preprocess_pil_image(image: Image.Image, input_size=416):
+def preprocess_image_pil(image: Image.Image, input_size=416):
     image = image.resize((input_size, input_size))
     image = np.asarray(image)
     image = image / 255.
@@ -19,17 +20,17 @@ def preprocess_pil_image(image: Image.Image, input_size=416):
     return image
 
 
-def load_image(image_path: str) -> np.array:
-    image = cv2.imread(image_path)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    return image
+# def load_image(image_path: str) -> np.array:
+#     image = cv2.imread(image_path)
+#     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+#     return image
 
 
-def preprocess_image(image, input_size: int):
-    image_data = cv2.resize(image, (input_size, input_size))
-    image_data = image_data / 255.
-    image_data = image_data[np.newaxis, ...].astype(np.float32)
-    return image_data
+# def preprocess_image_cv2(image, input_size: int):
+#     image_data = cv2.resize(image, (input_size, input_size))
+#     image_data = image_data / 255.
+#     image_data = image_data[np.newaxis, ...].astype(np.float32)
+#     return image_data
 
 
 def read_class_names(class_file_name: str):
@@ -94,5 +95,6 @@ def count_detections(bboxes, classes=read_class_names(cfg.YOLO.CLASSES)):
 
 
 def save_image(image):
-    #cv2.imwrite(f"./static/prediction/{filename.split('.')[0]}.png", image)
-    cv2.imwrite(f"./static/prediction/result.png", image)
+    save_folder = "./static/prediction"
+    os.makedirs(save_folder, exist_ok=True)
+    cv2.imwrite(os.path.join(save_folder, "result.png"), image)

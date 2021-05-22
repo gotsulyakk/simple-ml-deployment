@@ -30,7 +30,7 @@ async def predict(request: Request,
                   score_threshold: float = 0.25
                   ):
     image = utils.load_imagefile(await image_file.read())
-    image_data = utils.preprocess_pil_image(image)
+    image_data = utils.preprocess_image_pil(image)
 
     predictions = model.predict(
         image_data, iou_threshold=iou_threshold, score_threshold=score_threshold
