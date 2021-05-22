@@ -6,7 +6,6 @@ import numpy as np
 from core.config import cfg
 from PIL import Image
 from io import BytesIO
-import tensorflow as tf
 
 
 def load_imagefile(image_encoded) -> Image.Image:
