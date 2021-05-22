@@ -22,8 +22,8 @@ def render_home(request: Request):
     return templates.TemplateResponse("home.html", {"request": request})
 
 
-@app.get("/predict", response_class=HTMLResponse)
-@app.post("/predict")
+@app.get("/detect", response_class=HTMLResponse)
+@app.post("/detect")
 async def predict(request: Request,
                   image_file: UploadFile = File(...),
                   iou_threshold: float = 0.45,
@@ -32,7 +32,7 @@ async def predict(request: Request,
     image = utils.load_imagefile(await image_file.read())
     image_data = utils.preprocess_image_pil(image)
 
-    predictions = model.predict(
+    predictions = model.detect(
         image_data, iou_threshold=iou_threshold, score_threshold=score_threshold
         )
 
@@ -41,9 +41,9 @@ async def predict(request: Request,
     image_viz = cv2.cvtColor(image_viz, cv2.COLOR_BGR2RGB)
     utils.save_image(image_viz)
 
-    num_detections = utils.count_detections(predictions)
-    for key, value in num_detections.items():
-        print(key, len([item for item in value if item]))
+    # num_detections = utils.count_detections(predictions)
+    # for key, value in num_detections.items():
+    #     print(key, len([item for item in value if item]))
 
     return templates.TemplateResponse("result.html", {"request": request})
     

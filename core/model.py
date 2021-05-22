@@ -9,10 +9,11 @@ class YOLOModel:
     Class to make predictions
     with TensorfLow YOLO model
     """
-    def __init__(self, weights_path: str):
+    def __init__(self, weights_path: str, framework: str = "tflite"):
         self.weights_path = weights_path
+        self.framework = framework
 
-    def predict(self, 
+    def detect(self, 
                 input_data: np.array,
                 iou_threshold: float,
                 score_threshold: float,

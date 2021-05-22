@@ -6,6 +6,7 @@ import numpy as np
 from core.config import cfg
 from PIL import Image
 from io import BytesIO
+import tensorflow as tf
 
 
 def load_imagefile(image_encoded) -> Image.Image:
@@ -18,19 +19,6 @@ def preprocess_image_pil(image: Image.Image, input_size=416):
     image = image / 255.
     image = image[np.newaxis, ...].astype(np.float32)
     return image
-
-
-# def load_image(image_path: str) -> np.array:
-#     image = cv2.imread(image_path)
-#     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-#     return image
-
-
-# def preprocess_image_cv2(image, input_size: int):
-#     image_data = cv2.resize(image, (input_size, input_size))
-#     image_data = image_data / 255.
-#     image_data = image_data[np.newaxis, ...].astype(np.float32)
-#     return image_data
 
 
 def read_class_names(class_file_name: str):
@@ -95,6 +83,6 @@ def count_detections(bboxes, classes=read_class_names(cfg.YOLO.CLASSES)):
 
 
 def save_image(image):
-    save_folder = "./static/prediction"
+    save_folder = "./static/detection"
     os.makedirs(save_folder, exist_ok=True)
     cv2.imwrite(os.path.join(save_folder, "result.png"), image)
